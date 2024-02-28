@@ -9,7 +9,7 @@
                 </a>
             </li><!-- End Dashboard Nav -->
             <li class="nav-item">
-                <a class="nav-link " href="#">
+                <a class="nav-link " href="{{route('category.index')}}">
                     <i class="bi bi-folder"></i>
                     <span>Category</span>
                 </a>
