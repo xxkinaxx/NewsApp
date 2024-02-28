@@ -10,7 +10,7 @@
             </li><!-- End Dashboard Nav -->
             <li class="nav-item">
                 <a class="nav-link " href="{{route('category.index')}}">
-                    <i class="bi bi-folder"></i>
+                    <i class="bi bi-folder-fill"></i>
                     <span>Category</span>
                 </a>
             </li>
