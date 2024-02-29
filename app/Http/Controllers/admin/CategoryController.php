@@ -16,7 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('home.category.index');
+        // menurutkan data berdasarkan data terbaru
+        $category = Category::latest()->get();
+        return view('home.category.index', compact('category'));
     }
 
     /**
@@ -57,7 +59,7 @@ class CategoryController extends Controller
         ]);
 
         // melakukan return redirect
-        return redirect() ->route('category.index')->with('success', 'Category Berhasil Ditambahkan');
+        return redirect()->route('category.index')->with('success', 'Category Berhasil Ditambahkan');
     }
 
     /**

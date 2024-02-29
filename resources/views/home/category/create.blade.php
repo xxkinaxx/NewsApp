@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="card p-4">
-        <h2>Create Category</h2>
+        <h1>Create Category</h1>
 
         <!-- route store untuk melakukan penambahan data -->
         <form action="{{ route('category.store')}}" method="post" enctype="multipart/form-data">
