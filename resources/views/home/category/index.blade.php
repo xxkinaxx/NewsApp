@@ -37,9 +37,9 @@
                                 <td>
                                     <img src="{{ $row->image }}" width="200px" class="rounded" alt="">
                                 </td>
-                                <td>
+                                <td class="d-flex gap-2">
                                     <!-- Basic Modal -->
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#basicModal{{ $row->id }}">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal{{ $row->id }}">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     @include('home.category.includes.modal-show')
@@ -47,6 +47,15 @@
                                     <a href="{{ route('category.edit', $row->id) }}" class="btn btn-warning">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
+
+                                    <!-- button delete with route category.destroy {{ $row->id }} -->
+                                    <form action="{{ route('category.destroy', $row->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             @empty
