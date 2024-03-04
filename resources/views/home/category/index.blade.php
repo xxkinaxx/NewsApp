@@ -63,6 +63,8 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <!-- pagination -->
+                    {{ $category->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
