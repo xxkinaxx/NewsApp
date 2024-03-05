@@ -15,6 +15,11 @@
         <div class="container mt-3">
             <div class="card">
                 <div class="card-body">
+                    @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade">
+                        <h1>{{ session('success') }}</h1>
+                    </div>
+                    @endif
                     <h5 class="card-title">Data Table</h5>
                     <table class="table datatable">
                         <thead>

@@ -56,14 +56,15 @@ class CategoryController extends Controller
         // fungsi getClientOriginalName itu nama asli  dari image
         $image->storeAs('public/category', $image->hashName());
         // melakukan save to Database
-        Category::create([
+        if (Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'image' => $image->hashName()
-        ]);
-
-        // melakukan return redirect
-        return redirect()->route('category.index')->with('success', 'Category Berhasil Ditambahkan');
+        ])){
+            return redirect()->route('category.index')->with(['success' => 'Data Berhasil Ditambahkan']);
+        } else {
+            return redirect()->route('category.create')->with(['error' => 'Data Gagal Disimpan']);
+        }
     }
 
     /**
@@ -128,7 +129,7 @@ class CategoryController extends Controller
                 'slug' => Str::slug($request->name),
                 'image' => $image->hashName()
             ]);
-            return redirect()->route('category.index');
+            return redirect()->route('category.index')->with(['success' => 'Data Berhasil Diupdate']);
         }
     }
 
@@ -146,6 +147,6 @@ class CategoryController extends Controller
         Storage::disk('local')->delete('public/category/'. basename($category->image));
         // delete data by id
         $category->delete();
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with(['success' => 'Data Berhasil Dihapus']);
     }
 }
