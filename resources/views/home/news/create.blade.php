@@ -46,6 +46,12 @@
                         console.error(error);
                     });
             </script>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Submit
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+            </div>
         </form>
     </div>
 </div>
