@@ -18,7 +18,10 @@ class NewsController extends Controller
     public function index()
     {
         $title = 'News - Index';
-        return view('home.news.index', compact('title'));
+        // get data terbaru dari table news/ dari model news
+        $news = News::latest()->paginate(5);
+        $category = Category::all();
+        return view('home.news.index', compact('title', 'news', 'category'));
     }
 
     /**
