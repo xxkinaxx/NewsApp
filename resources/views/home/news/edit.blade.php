@@ -48,8 +48,9 @@
             </script>
 
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Submit
-                    <i class="bi bi-plus-lg"></i>
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-pencil-square"></i>
+                    Update News
                 </button>
             </div>
         </form>

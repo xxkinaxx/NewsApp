@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\NewsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,10 +32,13 @@ Route::match(['get', 'post'], '/register', function () {
 // route middleware
 Route::middleware('auth')->group(function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/profile', [App\Http\Controllers\Profile\ProfileController::class, 'index'])->name('profile.index');
     // routes for admin
     Route::middleware(['auth',  'admin'])->group(function(){
         Route::resource('news', NewsController::class);
 
-        Route::resource('category', CategoryController::class)->middleware('auth');
+        // fungsi except untuk menghilangkan 1 fungsi
+        // fungsi only untuk menampilkan hanya 1 fungsi
+        Route::resource('category', CategoryController::class)->middleware('auth')->except('show');
     });
 });

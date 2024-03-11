@@ -8,9 +8,7 @@
         <hr>
         <img src="{{ $news->image }}" alt="" class="container-fluid">
         <div class="mb-3">
-                <textarea id="editor" disabled>
-                    {!! $news->content !!}
-                </textarea>
+                {!! $news->content !!}
             </div>
             <script>
                 ClassicEditor

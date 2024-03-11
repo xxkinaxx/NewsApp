@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -58,15 +59,17 @@ class NewsController extends Controller
         $image->storeAs('public/news', $image->hashName());
 
         // create data ke dalam table
-        News::create([
+        if(News::create([
             'category_id' => $request->category_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title, '-'),
             'content' => $request->content,
             'image' => $image->hashName()
-        ]);
-
-        return redirect()->route('news.index')->with(['success', 'Data berhasil disimpan']);
+        ])){
+            return redirect()->route('news.index')->with(['success', 'Data berhasil disimpan']);
+        } else {
+            return redirect()->route('category.create')->with(['error' => 'Data Gagal Disimpan']);
+        }
     }
 
     /**
@@ -105,7 +108,43 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // validate
+        $this->validate($request,[
+            'title' => 'required|max:300',
+            'category_id' => 'required',
+            'content' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg'
+        ]);
+
+        // get data by id
+        $news = News::findOrFail($id);
+
+        // jika tidak ada image yg diupload
+        if($request->file('image') == ''){
+            // update data
+            $news->update([
+                'title' => $request->title,
+                'categoty_id' => $request->category_id,
+                'content' => $request->content,
+                'slug' => Str::slug($request->title)
+            ]);
+        }
+        else{
+            // hapus image lama
+            Storage::disk('local')->delete('public/news/'.basename($news->image));
+            // upload image baru
+            $image = $request->file('image');
+            $image -> storeAs('public/news', $image->hashName());
+            // update data
+            $news->update([
+                'title' => $request->title,
+                'categoty_id' => $request->category_id,
+                'content' => $request->content,
+                'image' => $image->hashName(),
+                'slug' => Str::slug($request->title)
+            ]);
+        }
+        return redirect()->route('news.index');
     }
 
     /**
@@ -116,6 +155,12 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // delete
+        $news = News::findOrFail($id);
+        Storage::disk('local')->delete('public/news/'. basename($news->image));
+
+        // delete data
+        $news()->delete;
+        return redirect()->route('news.index');
     }
 }

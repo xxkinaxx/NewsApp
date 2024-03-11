@@ -36,7 +36,7 @@
                             <td> {{ $row->title }} </td>
                             <td> {{ $row->category->name }} </td>
                             <td>
-                                <img src="{{ $row->image }}" alt="images" width="150px" class="rounded">
+                                <img src="{{ $row->image }}" alt="" width="150px" class="rounded">
                             </td>
                             <td>
                                 <img src="{{ $row->category->image }}" alt="" width="150px" class="rounded">
@@ -48,15 +48,22 @@
                                 <a href="{{ route('news.edit', $row->id) }}" class="btn btn-warning">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <button class="btn btn-danger">
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                <form action="{{ route('news.destroy', $row->id) }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete it?')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @empty
-                            <h5 class="text-center">
-                                Data masih kosong
-                            </h5>
+                        <h5 class="text-center">
+                            Data masih kosong
+                        </h5>
                         @endforelse
                     </tbody>
                 </table>
