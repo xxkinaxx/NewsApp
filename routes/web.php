@@ -33,6 +33,8 @@ Route::match(['get', 'post'], '/register', function () {
 Route::middleware('auth')->group(function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/profile', [App\Http\Controllers\Profile\ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/change', [App\Http\Controllers\Profile\ProfileController::class, 'changePassword'])->name('profile.change-password');
+    Route::put('/update-password', [App\Http\Controllers\Profile\ProfileController::class, 'updatePassword'])->name('profile.update-password');
     // routes for admin
     Route::middleware(['auth',  'admin'])->group(function(){
         Route::resource('news', NewsController::class);

@@ -8,7 +8,7 @@
         <hr>
         <img src="{{ $news->image }}" alt="" class="container-fluid">
         <div class="mb-3">
-                {!! $news->content !!}
+                {{ $news->content }}
             </div>
             <script>
                 ClassicEditor
