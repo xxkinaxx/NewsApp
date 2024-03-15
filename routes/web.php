@@ -18,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\frontend\FrontendController::class, 'index']);
 
 Auth::routes();
 
@@ -37,6 +35,8 @@ Route::middleware('auth')->group(function(){
     Route::put('/update-password', [App\Http\Controllers\Profile\ProfileController::class, 'updatePassword'])->name('profile.update-password');
     Route::get('/create-profile', [App\Http\Controllers\Profile\ProfileController::class, 'createProfile'])->name('profile.create-profile');
     Route::post('/store-profile', [App\Http\Controllers\Profile\ProfileController::class, 'storeProfile'])->name('profile.store-profile');
+    Route::get('/edit-profile', [App\Http\Controllers\Profile\ProfileController::class, 'editProfile'])->name('profile.edit-profile');
+    Route::put('/update-profile', [App\Http\Controllers\Profile\ProfileController::class, 'updateProfile'])->name('profile.update-profile');
     // routes for admin
     Route::middleware(['auth',  'admin'])->group(function(){
         Route::resource('news', NewsController::class);

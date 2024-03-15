@@ -48,9 +48,6 @@
                                 <a href="{{ route('news.edit', $row->id) }}" class="btn btn-warning">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
                                 <form action="{{ route('news.destroy', $row->id) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -67,6 +64,8 @@
                         @endforelse
                     </tbody>
                 </table>
+                <!-- pagination -->
+                    {{ $news->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
