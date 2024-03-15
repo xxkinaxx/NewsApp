@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,6 +44,40 @@ class ProfileController extends Controller
     }
 
     public function allUser() {
-        
+        $title = 'All user';
+        $user = User::where('role', 'user')->get();
+        return view('home.user.index', compact('title', 'user'));
+    }
+    public function resetPassword($id) {
+        // get data by id
+        $user = User::find($id);
+        $user->password = Hash::make('123456');
+        $user->save();
+        return redirect()->back()->with('success', 'Password has been reset!');
+    }
+
+    public function createProfile() {
+        $title = 'Create Profile';
+        return view('home.Profile.create', compact('title'));
+    }
+    public function storeProfile(Request $request) {
+        // validate
+        $this->validate($request, [
+            'image' => 'image|mimes:jpeg,png,jpg'
+        ]);
+
+        // store image
+        $image = $request->file('image');
+        $image->storeAs('public/profile', $image->getClientOriginalName());
+
+        // get user login
+        $user = auth()->user();
+
+        // craete data profile
+        $user->profile()->create([
+            'first_name' => $request->first_name,
+            'image' => $image->getClientOriginalName()
+        ]);
+        return redirect()->route('profile.index')->with('success', 'Profile has been created');
     }
 }

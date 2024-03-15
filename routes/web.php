@@ -25,9 +25,9 @@ Route::get('/', function () {
 Auth::routes();
 
 // handle redirect register to login
-Route::match(['get', 'post'], '/register', function () {
-    return redirect('/login');
-});
+// Route::match(['get', 'post'], '/register', function () {
+//     return redirect('/login');
+// });
 
 // route middleware
 Route::middleware('auth')->group(function(){
@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/profile', [App\Http\Controllers\Profile\ProfileController::class, 'index'])->name('profile.index');
     Route::get('/change', [App\Http\Controllers\Profile\ProfileController::class, 'changePassword'])->name('profile.change-password');
     Route::put('/update-password', [App\Http\Controllers\Profile\ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::get('/create-profile', [App\Http\Controllers\Profile\ProfileController::class, 'createProfile'])->name('profile.create-profile');
+    Route::post('/store-profile', [App\Http\Controllers\Profile\ProfileController::class, 'storeProfile'])->name('profile.store-profile');
     // routes for admin
     Route::middleware(['auth',  'admin'])->group(function(){
         Route::resource('news', NewsController::class);
@@ -42,5 +44,9 @@ Route::middleware('auth')->group(function(){
         // fungsi except untuk menghilangkan 1 fungsi
         // fungsi only untuk menampilkan hanya 1 fungsi
         Route::resource('category', CategoryController::class)->middleware('auth')->except('show');
+        // get all user
+        Route::get('/all-user', [App\Http\Controllers\Profile\ProfileController::class, 'allUser'])->name('allUser');
+        // reset password
+        Route::put('/reset-password/{id}', [App\Http\Controllers\Profile\ProfileController::class, 'resetPassword'])->name('resetPassword');
     });
 });
