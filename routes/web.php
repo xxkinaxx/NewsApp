@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\frontend\FrontendController::class, 'index']);
+Route::get('/detail/news/{slug}', [App\Http\Controllers\frontend\FrontendController::class, 'detailNews'])->name('detailNews');
+Route::get('/detail/category/{slug}', [App\Http\Controllers\frontend\FrontendController::class, 'detailCategory'])->name('detailCategory');
 
 Auth::routes();
 
