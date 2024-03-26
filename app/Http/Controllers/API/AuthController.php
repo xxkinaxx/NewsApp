@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
+    public function login(Request $request){
         try {
             // validate
             $this->validate($request, [
@@ -95,5 +94,54 @@ class AuthController extends Controller
     public function logout(Request $request) {
         $token = $request->user()->currentAccessToken()->delete();
         return ResponseFormatter::success($token, 'Token Revoked');
+    }
+
+    public function allUsers() {
+        $users = User::where('role', 'user')->get();
+        return ResponseFormatter::success(
+            $users, 'Data user berhasil diambil'
+        );
+    }
+
+    public function updatePassword(Request $request){
+        try {
+            // validate
+            $this->validate($request,[
+                'old_password' => 'required',
+                'new_password' => 'required|string|min:6',
+                'confirm_password' => 'required|string|min:6'
+            ]);
+    
+            // get data user
+            $user = Auth::user();
+    
+            // check old password
+            if(!Hash::check($request->old_password, $user->password)){
+                return ResponseFormatter::error([
+                    'message' => 'Password Lama Tidak Sama'
+                ], 'Authentication Failed', 401);
+            }
+    
+            // check new password and confirm password
+            if($request->new_password != $request->confirm_password){
+                return ResponseFormatter::error([
+                    'message' => 'Password Tidak Sesuai'
+                ], 'Authentication Failed', 401);
+            }
+    
+            // update password
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+    
+            return ResponseFormatter::success([
+                'message' => 'Password Berhasil Diubah'
+            ], 'Authenticated', 200);
+    
+        } catch (\Throwable $error) {
+            return ResponseFormatter::error([
+                'message' => 'Something went wrong',
+                'error' => $error
+            ], 'Authentication Failed', 500);
+        }
     }
 }
